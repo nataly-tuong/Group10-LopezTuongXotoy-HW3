@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
-<title>2D Sierpinski Gasket</title>
+<title>HW3B - Sierpinski</title>
 
 
 <script id="vertex-shader" type="x-shader/x-vertex">
@@ -25,7 +25,20 @@ out vec4 fColor;
 void
 main()
 {
-    fColor = vec4( 1.0, 0.0, 0.0, 1.0 );
+    float t = gl_FragCoord.y/512.0;
+
+    // sunsety coloring
+    vec3 red = vec3(0.8,0.1,0.1);
+    vec3 purple = vec3(0.3,0.1,0.5);
+    vec3 yellow = vec3(1.0,0.85,0.2);
+
+    vec3 color;
+    if(t<0.5) { // blends bottom half it's red into purple
+        color = mix(red,purple,t*2.0);
+    } else { // blends top half purple into yellow
+        color = mix(purple,yellow, (t-0.5)*2.0);
+    }
+    fColor = vec4(color,1.0);
 }
 </script>
 
