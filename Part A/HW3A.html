@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>HW3A - Moving RGB Avatar</title>
+
+    <!-- Required Common files -->
+    <script type="text/javascript" src="Common/webgl-utils.js"></script>
+    <script type="text/javascript" src="Common/initShaders.js"></script>
+    <script type="text/javascript" src="Common/MV.js"></script>
+
+    <!-- Your JavaScript -->
+    <script type="text/javascript" src="HW3A.js"></script>
+
+
+    <!-- Vertex Shader -->
+    <script id="vertex-shader" type="x-shader/x-vertex">
+        #version 300 es
+
+        in vec2 aPosition;
+        in vec3 aColor;
+
+        uniform vec2 uTranslation;
+
+        out vec3 vColor;
+
+        void main()
+        {
+            gl_Position = vec4(
+                aPosition + uTranslation,
+                0.0,
+                1.0
+            );
+
+            vColor = aColor;
+        }
+    </script>
+
+
+    <!-- Fragment Shader -->
+    <script id="fragment-shader" type="x-shader/x-fragment">
+        #version 300 es
+
+        precision mediump float;
+
+        in vec3 vColor;
+
+        out vec4 fColor;
+
+        void main()
+        {
+            fColor = vec4(vColor, 1.0);
+        }
+    </script>
+
+</head>
+
+
+<body>
+
+    <!-- Name: YOUR NAME | Date: YOUR DATE -->
+
+    <h2>HW3A - Moving RGB Avatar</h2>
+
+    <p>
+        W = Up &nbsp;&nbsp;
+        A = Left &nbsp;&nbsp;
+        S = Down &nbsp;&nbsp;
+        D = Right &nbsp;&nbsp;
+        1 = Reset
+    </p>
+
+    <canvas id="gl-canvas" width="600" height="600">
+        Your browser does not support the HTML5 canvas element.
+    </canvas>
+
+</body>
+
+</html>

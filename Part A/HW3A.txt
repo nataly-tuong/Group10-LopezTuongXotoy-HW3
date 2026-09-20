@@ -2,4 +2,11 @@ Nataly Tuong
 Joshua Xotoy
 William Lopez
 
-remember to put solution description here
+It was decided to keep it very simple with a rectangle of 3 different colors, R,G, and B.
+The black canvas is to visibly show the limitations of the avatar's range of motion, so
+there is no confusion as to why the avatar cannot move any further.
+There is a description on how to move the avatar just above the canvas, so the user knows how
+to move the avatar around, and what can be done to the avatar altogether.
+
+A moves it to the left, W moves it up, S moves it down, and D moves it to the right. 1 resets
+the avatar back to the origin.
