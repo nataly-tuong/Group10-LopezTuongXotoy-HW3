@@ -1,4 +1,3 @@
-//
 // HW3A.js
 //
 // HW3A - Moving RGB Square Avatar
@@ -9,9 +8,7 @@
 // D = move right
 // 1 = return to origin
 //
-// The avatar is a square divided into three colors:
-// RED, GREEN, and BLUE.
-//
+// The avatar is a square divided into three colors: Red, Green, and Blue
 
 "use strict";
 
@@ -26,32 +23,21 @@ var positionAttribute;
 var colorAttribute;
 var translationUniform;
 
-
-// ------------------------------------------------------------
 // Avatar position
-// ------------------------------------------------------------
-
 var avatarX = 0.0;
 var avatarY = 0.0;
 
 
-// How far the avatar moves per key press.
+// Distance avatar moves for each key press
 var moveAmount = 0.05;
 
 
-// The square extends 0.25 units from its center.
+// The square extends 0.25 units from its center
 var halfSize = 0.25;
-
-
-// ------------------------------------------------------------
-// Initialization
-// ------------------------------------------------------------
 
 window.onload = function()
 {
     var canvas = document.getElementById("gl-canvas");
-
-    // Get WebGL 2.0 context.
     gl = WebGLUtils.setupWebGL(canvas);
 
     if (!gl)
@@ -60,8 +46,6 @@ window.onload = function()
         return;
     }
 
-
-    // Set viewport.
     gl.viewport(
         0,
         0,
@@ -70,7 +54,7 @@ window.onload = function()
     );
 
 
-    // Dark background.
+    // Dark background
     gl.clearColor(
         0.05,
         0.05,
@@ -78,8 +62,6 @@ window.onload = function()
         1.0
     );
 
-
-    // Load shaders.
     program = initShaders(
         gl,
         "vertex-shader",
@@ -95,8 +77,6 @@ window.onload = function()
 
     gl.useProgram(program);
 
-
-    // Get shader locations.
     positionAttribute =
         gl.getAttribLocation(
             program,
@@ -118,74 +98,39 @@ window.onload = function()
         );
 
 
-    // Create square.
+    // Creates square
     createAvatar();
 
 
-    // Keyboard controls.
+    // Keyboard controls
     window.addEventListener(
         "keydown",
         keyboard
     );
 
-
-    // Initial drawing.
     render();
 };
 
-
-// ------------------------------------------------------------
-// Create RGB square
-// ------------------------------------------------------------
-
 function createAvatar()
 {
-    /*
-        Square dimensions:
-
-             -0.25             +0.25
-                 ┌─────────────┐
-                 │             │
-                 │             │
-                 │             │
-                 └─────────────┘
-             -0.25             +0.25
-
-        The square is divided into:
-
-             RED | GREEN | BLUE
-    */
-
-
+    // The avatar is a square, it spans from -0.25 to +0.25 on both x and y axes, it's also split into 3 diff sections such as red, green, and blue
     var left = -halfSize;
     var right = halfSize;
 
     var bottom = -halfSize;
     var top = halfSize;
 
-
-    // Divide square into three equal sections.
-    var sectionWidth =
-        (right - left) / 3.0;
+    // Divide square into three equal sections
+    var sectionWidth = (right - left) / 3.0;
 
 
-    var redRight =
-        left + sectionWidth;
+    var redRight = left + sectionWidth;
 
-    var greenRight =
-        left + (2.0 * sectionWidth);
+    var greenRight = left + (2.0 * sectionWidth);
 
-
-    // --------------------------------------------------------
     // Vertex positions
-    // --------------------------------------------------------
-
     var positions = [
-
-        // ==========================
-        // RED SECTION
-        // ==========================
-
+        // Red
         left,    bottom,
         redRight, bottom,
         redRight, top,
@@ -194,11 +139,7 @@ function createAvatar()
         redRight, top,
         left,    top,
 
-
-        // ==========================
-        // GREEN SECTION
-        // ==========================
-
+        // Green
         redRight,    bottom,
         greenRight,  bottom,
         greenRight,  top,
@@ -207,11 +148,7 @@ function createAvatar()
         greenRight,  top,
         redRight,    top,
 
-
-        // ==========================
-        // BLUE SECTION
-        // ==========================
-
+        // Blue
         greenRight, bottom,
         right,       bottom,
         right,       top,
@@ -221,14 +158,9 @@ function createAvatar()
         greenRight, top
     ];
 
-
-    // --------------------------------------------------------
     // Vertex colors
-    // --------------------------------------------------------
-
     var colors = [
-
-        // RED section
+        // Red
         1.0, 0.0, 0.0,
         1.0, 0.0, 0.0,
         1.0, 0.0, 0.0,
@@ -237,8 +169,7 @@ function createAvatar()
         1.0, 0.0, 0.0,
         1.0, 0.0, 0.0,
 
-
-        // GREEN section
+        // Green
         0.0, 1.0, 0.0,
         0.0, 1.0, 0.0,
         0.0, 1.0, 0.0,
@@ -247,8 +178,7 @@ function createAvatar()
         0.0, 1.0, 0.0,
         0.0, 1.0, 0.0,
 
-
-        // BLUE section
+        // Blue 
         0.0, 0.0, 1.0,
         0.0, 0.0, 1.0,
         0.0, 0.0, 1.0,
@@ -258,11 +188,7 @@ function createAvatar()
         0.0, 0.0, 1.0
     ];
 
-
-    // --------------------------------------------------------
     // Position buffer
-    // --------------------------------------------------------
-
     positionBuffer =
         gl.createBuffer();
 
@@ -278,10 +204,7 @@ function createAvatar()
     );
 
 
-    // --------------------------------------------------------
     // Color buffer
-    // --------------------------------------------------------
-
     colorBuffer =
         gl.createBuffer();
 
@@ -298,10 +221,7 @@ function createAvatar()
 }
 
 
-// ------------------------------------------------------------
 // Keyboard controls
-// ------------------------------------------------------------
-
 function keyboard(event)
 {
     var key =
@@ -330,7 +250,7 @@ function keyboard(event)
 
     else if (key === "1")
     {
-        // Return to origin.
+        // Return to origin
         avatarX = 0.0;
         avatarY = 0.0;
     }
@@ -341,30 +261,18 @@ function keyboard(event)
     }
 
 
-    // Stop avatar from leaving canvas.
+    // Stops the avatar from leaving canvas
     checkBounds();
 
-
-    // Draw updated position.
     render();
 }
 
-
-// ------------------------------------------------------------
 // Keep avatar inside [-1,+1]
-// ------------------------------------------------------------
-
 function checkBounds()
 {
-    /*
-        The square is 0.5 units wide.
-
-        Therefore its center can only go from:
-
-            -0.75 to +0.75
-
-        This keeps the entire square visible.
-    */
+    // The square is 0.5 units wide.
+    // The center can only go from -0.75 to +0.75
+    // Keeps the entire square visible.
 
 
     var minPosition =
@@ -398,14 +306,8 @@ function checkBounds()
     }
 }
 
-
-// ------------------------------------------------------------
-// Draw everything
-// ------------------------------------------------------------
-
 function render()
 {
-    // Clear canvas.
     gl.clear(
         gl.COLOR_BUFFER_BIT
     );
@@ -413,20 +315,13 @@ function render()
 
     gl.useProgram(program);
 
-
-    // Send current avatar position
-    // to the vertex shader.
     gl.uniform2f(
         translationUniform,
         avatarX,
         avatarY
     );
 
-
-    // --------------------------------------------------------
     // Position attribute
-    // --------------------------------------------------------
-
     gl.bindBuffer(
         gl.ARRAY_BUFFER,
         positionBuffer
@@ -448,10 +343,7 @@ function render()
     );
 
 
-    // --------------------------------------------------------
     // Color attribute
-    // --------------------------------------------------------
-
     gl.bindBuffer(
         gl.ARRAY_BUFFER,
         colorBuffer
@@ -472,11 +364,7 @@ function render()
         0
     );
 
-
-    // --------------------------------------------------------
     // Draw 18 vertices = 6 triangles = RGB square
-    // --------------------------------------------------------
-
     gl.drawArrays(
         gl.TRIANGLES,
         0,
