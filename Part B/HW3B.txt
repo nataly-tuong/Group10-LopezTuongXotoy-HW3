@@ -2,4 +2,7 @@ Nataly Tuong
 Joshua Xotoy
 William Lopez
 
-We started from the gasket 5 homework to reference. .. [enter more here]
+A Sierpinski triangle is a pattern that starts with one triangle. It subdivides into smaller ones. It continues splitting for each level, recursively.
+
+We started from the gasket 5 homework to reference. From gasket 5, we studied the code and then made adjustments. We removed the slider and changed the type of input. Specifically, we are using left click, then right click/middle click. We also had to account for the buffer size. Also, we changed the fragment shader color to a more fun one too!
+
