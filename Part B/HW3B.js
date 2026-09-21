@@ -1,9 +1,9 @@
+// Code heavily referenced from gasket 5 sample code!
 
 var canvas;
 var gl;
 
 var positions;
-
 var numTimesToSubdivide = 0;
 
 var bufferId;
@@ -15,44 +15,41 @@ function init()
     gl = canvas.getContext('webgl2');
     if (!gl) alert("WebGL 2.0 isn't available");
 
-
-    //
-    //  Initialize our data for the Sierpinski Gasket
-    //
-
-    // First, initialize the corners of our gasket with three positions.
-
-
-    //
-    //  Configure WebGL
-    //
     gl.viewport(0, 0, canvas.width, canvas.height);
     gl.clearColor(1.0, 1.0, 1.0, 1.0);
 
     //  Load shaders and initialize attribute buffers
-
     var program = initShaders(gl, "vertex-shader", "fragment-shader");
     gl.useProgram(program);
 
     // Load the data into the GPU
-
     bufferId = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, bufferId);
-    gl.bufferData(gl.ARRAY_BUFFER, 8*Math.pow(3, 6), gl.STATIC_DRAW);
 
+    // Buffer is sized for 8 max levls
+    // At level 8, 3^8 triangles
+    // Each triangle has 3 vertices,, each point has 2 floats, so each float takes up 4 bytes
+    // 8 bytes per point!
+    gl.bufferData(gl.ARRAY_BUFFER, 8*Math.pow(3, 8), gl.STATIC_DRAW);
 
 
     // Associate out shader variables with our data buffer
-
     var positionLoc = gl.getAttribLocation(program, "aPosition");
     gl.vertexAttribPointer(positionLoc, 2, gl.FLOAT, false, 0, 0);
     gl.enableVertexAttribArray(positionLoc);
 
-        document.getElementById("slider").onchange = function(event) {
-        numTimesToSubdivide = parseInt(event.target.value);
-        render();
-    };
-
+    // Mouse click event
+    canvas.onmousedown = function(event) {
+        // left mouse button to start a single new subdivision (up to a maximum of 8)
+        if (event.button === 0) { // left
+            if (numTimesToSubdivide < 8) {
+                numTimesToSubdivide++;
+                render();
+            }
+        } else {
+            // the right (or middle) button to have it iterate through subdivisions displaying a new one every second until a maximum of 8 subdivisions
+        }
+    }
 
     render();
 };
@@ -64,16 +61,16 @@ function triangle(a, b, c)
 
 function divideTriangle(a, b, c, count)
 {
+    // the count is the amount of times to subdivide before drawing
+    // ^ this decreases by 1 each call
 
     // check for end of recursion
-
     if (count == 0) {
         triangle(a, b, c);
     }
     else {
 
         //bisect the sides
-
         var ab = mix(a, b, 0.5);
         var ac = mix(a, c, 0.5);
         var bc = mix(b, c, 0.5);
@@ -81,7 +78,6 @@ function divideTriangle(a, b, c, count)
         --count;
 
         // three new triangles
-
         divideTriangle(a, ab, ac, count);
         divideTriangle(c, ac, bc, count);
         divideTriangle(b, bc, ab, count);
