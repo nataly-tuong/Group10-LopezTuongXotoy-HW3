@@ -1,5 +1,10 @@
 // Code heavily referenced from gasket 5 sample code!
-
+/*
+Nataly Tuong
+Joshua Xotoy
+William Lopez
+9-22-2026
+*/
 var canvas;
 var gl;
 

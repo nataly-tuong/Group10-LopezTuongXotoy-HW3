@@ -1,7 +1,7 @@
 Nataly Tuong
 Joshua Xotoy
 William Lopez
-
+9-20-2026
 It was decided to keep it very simple with a rectangle of 3 different colors, R,G, and B.
 The black canvas is to visibly show the limitations of the avatar's range of motion, so
 there is no confusion as to why the avatar cannot move any further.

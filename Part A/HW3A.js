@@ -9,7 +9,12 @@
 // 1 = return to origin
 //
 // The avatar is a square divided into three colors: Red, Green, and Blue
-
+/*
+Nataly Tuong
+Joshua Xotoy
+William Lopez
+9-20-2026 
+*/
 "use strict";
 
 
