@@ -33,7 +33,7 @@ main()
     vec3 yellow = vec3(1.0,0.85,0.2);
 
     vec3 color;
-    if(t<0.5) { < // blends bottom half it's red into purple
+    if(t < 0.5) { // blends bottom half it's red into purple
         color = mix(red,purple,t*2.0);
     } else { // blends top half purple into yellow
         color = mix(purple,yellow, (t-0.5)*2.0);

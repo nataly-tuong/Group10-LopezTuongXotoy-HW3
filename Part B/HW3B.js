@@ -8,6 +8,7 @@ var numTimesToSubdivide = 0;
 
 var bufferId;
 
+var autoTimer = null;
 function init()
 {
     canvas = document.getElementById("gl-canvas");
@@ -38,6 +39,8 @@ function init()
     gl.vertexAttribPointer(positionLoc, 2, gl.FLOAT, false, 0, 0);
     gl.enableVertexAttribArray(positionLoc);
 
+    //prevent right-click from opening contextmenu
+    canvas.addEventListener("contextmenu", function(e){ e.preventDefault(); });
     // Mouse click event
     canvas.onmousedown = function(event) {
         // left mouse button to start a single new subdivision (up to a maximum of 8)
@@ -46,8 +49,20 @@ function init()
                 numTimesToSubdivide++;
                 render();
             }
-        } else {
+        } else if (event.button === 1 || event.button === 2) {
             // the right (or middle) button to have it iterate through subdivisions displaying a new one every second until a maximum of 8 subdivisions
+            if (autoTimer != null) {
+                clearInterval(autoTimer);
+            }
+            autoTimer = setInterval(function() {
+                if (numTimesToSubdivide < 8) {
+                    numTimesToSubdivide++;
+                    render();
+                } else {
+                    clearInterval(autoTimer);
+                    autoTimer = null;
+                }
+            }, 1000); // 1 second per subdivision
         }
     }
 
